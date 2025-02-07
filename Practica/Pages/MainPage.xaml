@@ -44,7 +44,7 @@
 
         <StackPanel >
 
-            <TextBlock Text="Таблицы" HorizontalAlignment="Center" FontFamily="Bahnschrift SemiBold SemiCondensed" FontSize="24" Margin="0,30,0,0"/>
+            <TextBlock Text="Таблицы" HorizontalAlignment="Center" FontFamily="Bahnschrift SemiBold SemiCondensed" FontSize="24" Margin="0,15,0,0"/>
 
 
             <Button x:Name="but" Margin="0,5,0,5" Width="120" Height="30" HorizontalAlignment="Center" Content="ЗП" Background="#67BA80" Foreground="#FFFFFF" Click="but_Click_1" >
