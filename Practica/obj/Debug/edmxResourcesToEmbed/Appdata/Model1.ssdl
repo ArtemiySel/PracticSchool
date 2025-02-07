@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище PracticaModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BudgetAllocations">
+    <Key>
+      <PropertyRef Name="AllocationID" />
+    </Key>
+    <Property Name="AllocationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="YearID" Type="int" Nullable="false" />
+    <Property Name="ItemID" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BudgetCategories">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CategoryType" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BudgetItems">
+    <Key>
+      <PropertyRef Name="ItemID" />
+    </Key>
+    <Property Name="ItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryID" Type="int" Nullable="false" />
+    <Property Name="ItemName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Employers">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Position" Type="nvarchar" MaxLength="100" />
+    <Property Name="HireDate" Type="date" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" />
+    <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="FinancialYears">
+    <Key>
+      <PropertyRef Name="YearID" />
+    </Key>
+    <Property Name="YearID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="YearStart" Type="date" Nullable="false" />
+    <Property Name="YearEnd" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PaymentMethods">
+    <Key>
+      <PropertyRef Name="PaymentMethodID" />
+    </Key>
+    <Property Name="PaymentMethodID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MethodName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="SupplierID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Salariess">
+    <Key>
+      <PropertyRef Name="SalaryID" />
+    </Key>
+    <Property Name="SalaryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeeID" Type="int" Nullable="false" />
+    <Property Name="YearID" Type="int" Nullable="false" />
+    <Property Name="Month" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="PaymentDate" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Suppliers">
+    <Key>
+      <PropertyRef Name="SupplierID" />
+    </Key>
+    <Property Name="SupplierID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SupplierName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="ContactName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_BudgetAllocations_BudgetItems">
+    <End Role="BudgetItems" Type="Self.BudgetItems" Multiplicity="1" />
+    <End Role="BudgetAllocations" Type="Self.BudgetAllocations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BudgetItems">
+        <PropertyRef Name="ItemID" />
+      </Principal>
+      <Dependent Role="BudgetAllocations">
+        <PropertyRef Name="ItemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BudgetAllocations_FinancialYears">
+    <End Role="FinancialYears" Type="Self.FinancialYears" Multiplicity="1" />
+    <End Role="BudgetAllocations" Type="Self.BudgetAllocations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FinancialYears">
+        <PropertyRef Name="YearID" />
+      </Principal>
+      <Dependent Role="BudgetAllocations">
+        <PropertyRef Name="YearID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BudgetItems_BudgetCategories">
+    <End Role="BudgetCategories" Type="Self.BudgetCategories" Multiplicity="1" />
+    <End Role="BudgetItems" Type="Self.BudgetItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BudgetCategories">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="BudgetItems">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PaymentMethods_Suppliers">
+    <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="1" />
+    <End Role="PaymentMethods" Type="Self.PaymentMethods" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Suppliers">
+        <PropertyRef Name="SupplierID" />
+      </Principal>
+      <Dependent Role="PaymentMethods">
+        <PropertyRef Name="SupplierID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Salariess_Employers">
+    <End Role="Employers" Type="Self.Employers" Multiplicity="1" />
+    <End Role="Salariess" Type="Self.Salariess" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employers">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="Salariess">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Salariess_FinancialYears">
+    <End Role="FinancialYears" Type="Self.FinancialYears" Multiplicity="1" />
+    <End Role="Salariess" Type="Self.Salariess" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FinancialYears">
+        <PropertyRef Name="YearID" />
+      </Principal>
+      <Dependent Role="Salariess">
+        <PropertyRef Name="YearID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище PracticaModelContainer">
+    <EntitySet Name="BudgetAllocations" EntityType="Self.BudgetAllocations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BudgetCategories" EntityType="Self.BudgetCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BudgetItems" EntityType="Self.BudgetItems" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employers" EntityType="Self.Employers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FinancialYears" EntityType="Self.FinancialYears" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PaymentMethods" EntityType="Self.PaymentMethods" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Salariess" EntityType="Self.Salariess" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_BudgetAllocations_BudgetItems" Association="Self.FK_BudgetAllocations_BudgetItems">
+      <End Role="BudgetItems" EntitySet="BudgetItems" />
+      <End Role="BudgetAllocations" EntitySet="BudgetAllocations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BudgetAllocations_FinancialYears" Association="Self.FK_BudgetAllocations_FinancialYears">
+      <End Role="FinancialYears" EntitySet="FinancialYears" />
+      <End Role="BudgetAllocations" EntitySet="BudgetAllocations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BudgetItems_BudgetCategories" Association="Self.FK_BudgetItems_BudgetCategories">
+      <End Role="BudgetCategories" EntitySet="BudgetCategories" />
+      <End Role="BudgetItems" EntitySet="BudgetItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PaymentMethods_Suppliers" Association="Self.FK_PaymentMethods_Suppliers">
+      <End Role="Suppliers" EntitySet="Suppliers" />
+      <End Role="PaymentMethods" EntitySet="PaymentMethods" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Salariess_Employers" Association="Self.FK_Salariess_Employers">
+      <End Role="Employers" EntitySet="Employers" />
+      <End Role="Salariess" EntitySet="Salariess" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Salariess_FinancialYears" Association="Self.FK_Salariess_FinancialYears">
+      <End Role="FinancialYears" EntitySet="FinancialYears" />
+      <End Role="Salariess" EntitySet="Salariess" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

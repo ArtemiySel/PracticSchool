@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PracticaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BudgetAllocations">
+    <Key>
+      <PropertyRef Name="AllocationID" />
+    </Key>
+    <Property Name="AllocationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="YearID" Type="Int32" Nullable="false" />
+    <Property Name="ItemID" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+    <NavigationProperty Name="BudgetItems" Relationship="Self.FK_BudgetAllocations_BudgetItems" FromRole="BudgetAllocations" ToRole="BudgetItems" />
+    <NavigationProperty Name="FinancialYears" Relationship="Self.FK_BudgetAllocations_FinancialYears" FromRole="BudgetAllocations" ToRole="FinancialYears" />
+  </EntityType>
+  <EntityType Name="BudgetCategories">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CategoryType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="BudgetItems" Relationship="Self.FK_BudgetItems_BudgetCategories" FromRole="BudgetCategories" ToRole="BudgetItems" />
+  </EntityType>
+  <EntityType Name="BudgetItems">
+    <Key>
+      <PropertyRef Name="ItemID" />
+    </Key>
+    <Property Name="ItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryID" Type="Int32" Nullable="false" />
+    <Property Name="ItemName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="BudgetAllocations" Relationship="Self.FK_BudgetAllocations_BudgetItems" FromRole="BudgetItems" ToRole="BudgetAllocations" />
+    <NavigationProperty Name="BudgetCategories" Relationship="Self.FK_BudgetItems_BudgetCategories" FromRole="BudgetItems" ToRole="BudgetCategories" />
+  </EntityType>
+  <EntityType Name="Employers">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Position" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="HireDate" Type="DateTime" Precision="0" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Salariess" Relationship="Self.FK_Salariess_Employers" FromRole="Employers" ToRole="Salariess" />
+  </EntityType>
+  <EntityType Name="FinancialYears">
+    <Key>
+      <PropertyRef Name="YearID" />
+    </Key>
+    <Property Name="YearID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="YearStart" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="YearEnd" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="BudgetAllocations" Relationship="Self.FK_BudgetAllocations_FinancialYears" FromRole="FinancialYears" ToRole="BudgetAllocations" />
+    <NavigationProperty Name="Salariess" Relationship="Self.FK_Salariess_FinancialYears" FromRole="FinancialYears" ToRole="Salariess" />
+  </EntityType>
+  <EntityType Name="PaymentMethods">
+    <Key>
+      <PropertyRef Name="PaymentMethodID" />
+    </Key>
+    <Property Name="PaymentMethodID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MethodName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SupplierID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Suppliers" Relationship="Self.FK_PaymentMethods_Suppliers" FromRole="PaymentMethods" ToRole="Suppliers" />
+  </EntityType>
+  <EntityType Name="Salariess">
+    <Key>
+      <PropertyRef Name="SalaryID" />
+    </Key>
+    <Property Name="SalaryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+    <Property Name="YearID" Type="Int32" Nullable="false" />
+    <Property Name="Month" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Employers" Relationship="Self.FK_Salariess_Employers" FromRole="Salariess" ToRole="Employers" />
+    <NavigationProperty Name="FinancialYears" Relationship="Self.FK_Salariess_FinancialYears" FromRole="Salariess" ToRole="FinancialYears" />
+  </EntityType>
+  <EntityType Name="Suppliers">
+    <Key>
+      <PropertyRef Name="SupplierID" />
+    </Key>
+    <Property Name="SupplierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SupplierName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ContactName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="PaymentMethods" Relationship="Self.FK_PaymentMethods_Suppliers" FromRole="Suppliers" ToRole="PaymentMethods" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_BudgetAllocations_BudgetItems">
+    <End Role="BudgetItems" Type="Self.BudgetItems" Multiplicity="1" />
+    <End Role="BudgetAllocations" Type="Self.BudgetAllocations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BudgetItems">
+        <PropertyRef Name="ItemID" />
+      </Principal>
+      <Dependent Role="BudgetAllocations">
+        <PropertyRef Name="ItemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BudgetAllocations_FinancialYears">
+    <End Role="FinancialYears" Type="Self.FinancialYears" Multiplicity="1" />
+    <End Role="BudgetAllocations" Type="Self.BudgetAllocations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FinancialYears">
+        <PropertyRef Name="YearID" />
+      </Principal>
+      <Dependent Role="BudgetAllocations">
+        <PropertyRef Name="YearID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BudgetItems_BudgetCategories">
+    <End Role="BudgetCategories" Type="Self.BudgetCategories" Multiplicity="1" />
+    <End Role="BudgetItems" Type="Self.BudgetItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BudgetCategories">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="BudgetItems">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Salariess_Employers">
+    <End Role="Employers" Type="Self.Employers" Multiplicity="1" />
+    <End Role="Salariess" Type="Self.Salariess" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employers">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="Salariess">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Salariess_FinancialYears">
+    <End Role="FinancialYears" Type="Self.FinancialYears" Multiplicity="1" />
+    <End Role="Salariess" Type="Self.Salariess" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FinancialYears">
+        <PropertyRef Name="YearID" />
+      </Principal>
+      <Dependent Role="Salariess">
+        <PropertyRef Name="YearID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PaymentMethods_Suppliers">
+    <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="1" />
+    <End Role="PaymentMethods" Type="Self.PaymentMethods" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Suppliers">
+        <PropertyRef Name="SupplierID" />
+      </Principal>
+      <Dependent Role="PaymentMethods">
+        <PropertyRef Name="SupplierID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PracticaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BudgetAllocations" EntityType="Self.BudgetAllocations" />
+    <EntitySet Name="BudgetCategories" EntityType="Self.BudgetCategories" />
+    <EntitySet Name="BudgetItems" EntityType="Self.BudgetItems" />
+    <EntitySet Name="Employers" EntityType="Self.Employers" />
+    <EntitySet Name="FinancialYears" EntityType="Self.FinancialYears" />
+    <EntitySet Name="PaymentMethods" EntityType="Self.PaymentMethods" />
+    <EntitySet Name="Salariess" EntityType="Self.Salariess" />
+    <EntitySet Name="Suppliers" EntityType="Self.Suppliers" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <AssociationSet Name="FK_BudgetAllocations_BudgetItems" Association="Self.FK_BudgetAllocations_BudgetItems">
+      <End Role="BudgetItems" EntitySet="BudgetItems" />
+      <End Role="BudgetAllocations" EntitySet="BudgetAllocations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BudgetAllocations_FinancialYears" Association="Self.FK_BudgetAllocations_FinancialYears">
+      <End Role="FinancialYears" EntitySet="FinancialYears" />
+      <End Role="BudgetAllocations" EntitySet="BudgetAllocations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BudgetItems_BudgetCategories" Association="Self.FK_BudgetItems_BudgetCategories">
+      <End Role="BudgetCategories" EntitySet="BudgetCategories" />
+      <End Role="BudgetItems" EntitySet="BudgetItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Salariess_Employers" Association="Self.FK_Salariess_Employers">
+      <End Role="Employers" EntitySet="Employers" />
+      <End Role="Salariess" EntitySet="Salariess" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Salariess_FinancialYears" Association="Self.FK_Salariess_FinancialYears">
+      <End Role="FinancialYears" EntitySet="FinancialYears" />
+      <End Role="Salariess" EntitySet="Salariess" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PaymentMethods_Suppliers" Association="Self.FK_PaymentMethods_Suppliers">
+      <End Role="Suppliers" EntitySet="Suppliers" />
+      <End Role="PaymentMethods" EntitySet="PaymentMethods" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
